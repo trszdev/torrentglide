@@ -1,0 +1,5 @@
+# WXT: generated types and build output
+.wxt
+.output
+# Playwright Test output (e2e)
+.e2e-results

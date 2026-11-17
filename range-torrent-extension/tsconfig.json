@@ -1,0 +1,10 @@
+{
+  // WXT's generated config (bun install runs `wxt prepare`) carries the same
+  // strict options as ../tsconfig.base.json, plus the aliases and its types.
+  "extends": "./.wxt/tsconfig.json",
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    "jsxImportSource": "preact",
+    "types": ["bun"]
+  }
+}

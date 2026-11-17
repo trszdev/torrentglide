@@ -1,0 +1,698 @@
+/*
+ * The page around the player (SPEC §3–§8): colours for both themes,
+ * controls, the header, History, the dialogs, Start and the review. The
+ * player brings its own styles and stays dark either way.
+ */
+
+:root {
+  color-scheme: dark;
+  --bg: #0d0f12;
+  --surface: #161a1f;
+  --surface-2: #1d2228;
+  --border: #2a3038;
+  --text: #e8ebef;
+  --text-muted: #9099a4;
+  --text-faint: #646d78;
+  --accent: #5b8cff;
+  --accent-strong: #7aa2ff;
+  --ok: #3ecf8e;
+  --warn: #f2b84b;
+  --error: #ff6b6b;
+  /* Destructive buttons: --error is too light under white text. */
+  --danger: #d14343;
+  --radius: 10px;
+  --font: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --mono: ui-monospace, 'SF Mono', Menlo, monospace;
+}
+
+/* Light follows the system unless the settings pick a theme (data-theme on <html>). */
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme='dark']) {
+    color-scheme: light;
+    --bg: #f4f5f7;
+    --surface: #ffffff;
+    --surface-2: #eceff3;
+    --border: #d8dde4;
+    --text: #14181d;
+    --text-muted: #56606b;
+    --text-faint: #7d8691;
+    --accent: #3a6df0;
+    --accent-strong: #2c5bd6;
+    --ok: #1d9a5f;
+    --warn: #c88a10;
+    --error: #cf3a3a;
+    --danger: #c53030;
+  }
+}
+
+:root[data-theme='light'] {
+  color-scheme: light;
+  --bg: #f4f5f7;
+  --surface: #ffffff;
+  --surface-2: #eceff3;
+  --border: #d8dde4;
+  --text: #14181d;
+  --text-muted: #56606b;
+  --text-faint: #7d8691;
+  --accent: #3a6df0;
+  --accent-strong: #2c5bd6;
+  --ok: #1d9a5f;
+  --warn: #c88a10;
+  --error: #cf3a3a;
+  --danger: #c53030;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+/* Several hideable elements set their own `display`, which would beat the UA's [hidden] rule. */
+[hidden] {
+  display: none !important;
+}
+
+html,
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font: 14px/1.45 var(--font);
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+
+a {
+  color: var(--accent-strong);
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.app {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 16px 24px 40px;
+}
+
+.hint {
+  color: var(--text-faint);
+  font-size: 12px;
+}
+
+/* ---- Controls ---------------------------------------------------------- */
+
+.text-input {
+  width: 100%;
+  min-width: 0;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--bg);
+  font-family: var(--mono);
+  font-size: 13px;
+}
+
+.text-input:focus {
+  outline: 2px solid var(--accent);
+  outline-offset: -1px;
+}
+
+select.text-input,
+textarea.text-input {
+  font-family: var(--font);
+  font-size: 14px;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 0 14px;
+  min-height: 40px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface-2);
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.btn:hover {
+  border-color: var(--text-faint);
+}
+
+.btn:disabled {
+  cursor: default;
+  opacity: 0.55;
+}
+
+.btn:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+
+.btn-primary {
+  border-color: var(--accent);
+  background: var(--accent);
+  color: #fff;
+  font-weight: 600;
+}
+
+.btn-primary:hover:not(:disabled) {
+  border-color: var(--accent-strong);
+  background: var(--accent-strong);
+}
+
+.btn-danger {
+  border-color: var(--danger);
+  background: var(--danger);
+  color: #fff;
+  font-weight: 600;
+}
+
+.btn-danger:hover {
+  border-color: color-mix(in srgb, var(--danger) 85%, #fff);
+  background: color-mix(in srgb, var(--danger) 85%, #fff);
+}
+
+.btn-small {
+  min-height: 28px;
+  padding: 0 10px;
+  font-size: 12px;
+}
+
+.icon-btn {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  padding: 5px;
+  border: 0;
+  border-radius: 8px;
+  background: none;
+  color: var(--text-muted);
+  cursor: pointer;
+}
+
+.icon-btn:hover {
+  background: var(--surface-2);
+  color: var(--text);
+}
+
+.icon-btn:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: -2px;
+}
+
+.icon-btn svg {
+  width: 100%;
+  height: 100%;
+}
+
+/* ---- Header ------------------------------------------------------------ */
+
+.ext-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin: 4px 0 16px;
+}
+
+.ext-logo {
+  flex: none;
+  width: 44px;
+  height: 44px;
+}
+
+.ext-heading {
+  min-width: 0;
+}
+
+.ext-title-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 12px;
+}
+
+.ext-title {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 650;
+  letter-spacing: 0.01em;
+}
+
+.ext-tagline {
+  margin: 2px 0 0;
+  color: var(--text-muted);
+}
+
+.ext-rqbit {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--error);
+}
+
+.ext-rqbit-dot {
+  flex: none;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--warn);
+  cursor: help;
+}
+
+[data-state='running'] > .ext-rqbit-dot {
+  background: var(--ok);
+}
+
+[data-state='not-allowed'] > .ext-rqbit-dot,
+[data-state='not-answering'] > .ext-rqbit-dot {
+  background: var(--error);
+}
+
+/* The incognito mask (SPEC §11.1, §11.3), in the tagline's colour. */
+.mask {
+  display: inline-block;
+  flex: none;
+  color: var(--text-muted);
+}
+
+.mask svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+:root[data-theme='dark'] .mask {
+  color: color-mix(in srgb, var(--text-muted) 70%, #fff);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) .mask {
+    color: color-mix(in srgb, var(--text-muted) 70%, #fff);
+  }
+}
+
+.ext-mask {
+  width: 18px;
+  height: 12px;
+}
+
+/* ---- Layout ------------------------------------------------------------ */
+
+.layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 320px;
+  gap: 20px;
+  align-items: start;
+}
+
+.main-column,
+.side-column {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-width: 0;
+}
+
+@media (max-width: 1000px) {
+  .layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .app {
+    padding: 12px 16px 32px;
+  }
+}
+
+/* ---- History ----------------------------------------------------------- */
+
+.panel {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+}
+
+.panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--border);
+}
+
+/* Before rqbit has answered there's nothing under the header, and no line. */
+.panel.is-waiting .panel-header {
+  border-bottom: 0;
+}
+
+.panel-title {
+  margin: 0;
+  overflow: hidden;
+  font-size: 13px;
+  font-weight: 600;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.panel-actions {
+  display: flex;
+  gap: 2px;
+  margin: -4px -6px -4px 0;
+}
+
+/* About eight rows, none included; a longer History scrolls inside the panel. */
+.history-list,
+.history-empty {
+  height: min(32rem, 55vh);
+}
+
+.history-list {
+  margin: 0;
+  padding: 4px;
+  list-style: none;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+/* In one column, under the player, History grows with its rows: the page scrolls. */
+@media (max-width: 1000px) {
+  .history-list,
+  .history-empty {
+    height: auto;
+    min-height: 12rem;
+  }
+
+  .history-list {
+    overflow-y: visible;
+  }
+}
+
+.history-empty {
+  margin: 0;
+  padding: 12px 14px;
+}
+
+.history-row {
+  display: flex;
+  align-items: center;
+  border-radius: 6px;
+}
+
+.history-row:hover,
+.history-row:focus-within {
+  background: var(--surface-2);
+}
+
+.history-row.is-open {
+  background: color-mix(in srgb, var(--accent) 16%, transparent);
+}
+
+.history-item {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+  padding: 8px 4px 8px 10px;
+  border: 0;
+  border-radius: 6px;
+  background: none;
+  cursor: pointer;
+  text-align: left;
+}
+
+.history-item:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: -2px;
+}
+
+.history-title {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  min-width: 0;
+}
+
+.history-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* On the name's x-height, not the line's middle. */
+.history-mask {
+  width: 13px;
+  height: 9px;
+  align-self: baseline;
+  transform: translateY(0.05em);
+}
+
+.history-meta {
+  min-height: 1.45em;
+  color: var(--text-faint);
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+}
+
+.history-downloaded {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  margin-right: 5px;
+  vertical-align: -1px;
+}
+
+.history-downloaded svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* Shown on the row pointed at or focused; always on touch screens. */
+.history-remove {
+  width: 28px;
+  height: 28px;
+  margin-right: 4px;
+  opacity: 0;
+}
+
+.history-row:hover .history-remove,
+.history-row:focus-within .history-remove {
+  opacity: 1;
+}
+
+@media (hover: none) {
+  .history-remove {
+    opacity: 1;
+  }
+}
+
+/* Well clear of History's last row, so a tap meant for it doesn't land here. */
+.below-history {
+  margin-top: 24px;
+}
+
+.review-button {
+  width: 100%;
+}
+
+/* ---- Dialogs ----------------------------------------------------------- */
+
+.rp-dialog {
+  width: min(460px, calc(100vw - 32px));
+  padding: 0;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--surface);
+  color: var(--text);
+  box-shadow: 0 16px 48px rgb(0 0 0 / 0.5);
+}
+
+.rp-dialog::backdrop {
+  background: rgb(0 0 0 / 0.55);
+}
+
+.rp-dialog form,
+.rp-dialog-body {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 18px;
+}
+
+.rp-dialog p {
+  margin: 0;
+}
+
+.rp-dialog-title {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.rp-dialog-name {
+  overflow-wrap: anywhere;
+  font-weight: 600;
+}
+
+.rp-dialog-error {
+  color: var(--error);
+  overflow-wrap: anywhere;
+}
+
+.rp-dialog-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.rp-dialog-or {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--text-faint);
+  font-size: 12px;
+}
+
+.rp-dialog-or::before,
+.rp-dialog-or::after {
+  content: '';
+  flex: 1;
+  border-top: 1px solid var(--border);
+}
+
+.rp-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.rp-field-label {
+  color: var(--text-muted);
+  font-size: 12px;
+}
+
+.rp-checkbox {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  cursor: pointer;
+}
+
+.rp-checkbox input {
+  margin: 3px 0 0;
+  accent-color: var(--accent);
+}
+
+.rp-checkbox.is-danger input {
+  accent-color: var(--error);
+}
+
+.rp-checkbox .hint {
+  display: block;
+  overflow-wrap: anywhere;
+}
+
+.drop-zone {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 22px 16px;
+  border: 1.5px dashed var(--border);
+  border-radius: var(--radius);
+  color: var(--text-muted);
+  cursor: pointer;
+  text-align: center;
+}
+
+.drop-zone svg {
+  width: 26px;
+  height: 26px;
+}
+
+.drop-zone:hover,
+.drop-zone.is-over,
+.drop-zone:focus-within {
+  border-color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 8%, transparent);
+  color: var(--text);
+}
+
+.drop-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 3px dashed var(--accent);
+  background: color-mix(in srgb, var(--bg) 85%, transparent);
+  font-size: 18px;
+  pointer-events: none;
+}
+
+/* ---- Review ------------------------------------------------------------ */
+
+.review-stars {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.review-stars legend {
+  margin-bottom: 6px;
+  padding: 0;
+}
+
+.review-star-row {
+  display: flex;
+  gap: 2px;
+}
+
+.review-star {
+  padding: 0 2px;
+  border-radius: 6px;
+  color: var(--border);
+  cursor: pointer;
+  font-size: 32px;
+  line-height: 1;
+}
+
+.review-star::before {
+  content: '★';
+}
+
+.review-star.is-lit {
+  color: #f2b01e;
+}
+
+.review-star:has(input:focus-visible) {
+  outline: 2px solid var(--accent);
+}
+
+.review-message {
+  resize: vertical;
+}

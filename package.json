@@ -1,0 +1,18 @@
+{
+  "name": "tv-client",
+  "private": true,
+  "description": "range-player: plays files from torrents and magnet links in the browser with movi-player, streamed through a local rqbit client. TorrentGlide: a browser extension that opens magnet and .torrent links in it.",
+  "workspaces": ["range-player", "range-torrent-extension"],
+  "scripts": {
+    "bootstrap": "bun install",
+    "dev": "cd range-player && bun run dev",
+    "ext:dev": "cd range-torrent-extension && bun run dev",
+    "ext:build": "cd range-torrent-extension && bun run build",
+    "test": "cd range-player && bun run test && cd ../range-torrent-extension && bun run test",
+    "typecheck": "cd range-player && bun run typecheck && cd ../range-torrent-extension && bun run typecheck"
+  },
+  "devDependencies": {
+    "@types/bun": "^1.4.4",
+    "typescript": "^5.9.3"
+  }
+}

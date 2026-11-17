@@ -1,0 +1,18 @@
+{
+  "name": "range-player",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./core": "./src/core/index.ts"
+  },
+  "scripts": {
+    "dev": "bun scripts/serve.ts",
+    "test": "bun test test/unit",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "lit-html": "^3.3.3",
+    "movi-player": "0.4.1"
+  }
+}

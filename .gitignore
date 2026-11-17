@@ -1,0 +1,11 @@
+# Build output and caches
+range-torrent-extension/.wxt
+range-torrent-extension/.output
+range-torrent-extension/.e2e-results
+range-player/dist
+
+# Dependencies
+**/node_modules
+
+# OS / editor noise
+.DS_Store
