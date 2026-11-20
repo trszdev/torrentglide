@@ -3,7 +3,7 @@
 <p align="center">
   <a href="https://chromewebstore.google.com/detail/torrentglide/ankgbfpkdlajgojmgijifehjbkfekhpb"><img src="https://img.shields.io/chrome-web-store/v/ankgbfpkdlajgojmgijifehjbkfekhpb?label=Chrome%20Web%20Store&logo=googlechrome&logoColor=white&color=4285F4" alt="Chrome Web Store"></a>
   <a href="https://addons.mozilla.org/firefox/addon/torrentglide/"><img src="https://img.shields.io/amo/v/torrentglide?label=Firefox%20Add-ons&logo=firefoxbrowser&logoColor=white&color=FF7139" alt="Firefox Add-ons"></a>
-  <a href="https://trszdev.github.io/torrentglide/"><img src="https://img.shields.io/badge/website-trszdev.github.io%2Ftorrentglide-2ea44f" alt="Website"></a>
+  <a href="https://torrentglide.github.io/"><img src="https://img.shields.io/badge/website-torrentglide.github.io-2ea44f" alt="Website"></a>
 </p>
 
 <p align="center">
