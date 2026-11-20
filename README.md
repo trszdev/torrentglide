@@ -1,6 +1,12 @@
 # <img src="range-torrent-extension/assets/icon.svg" alt="" width="40" height="40" align="center"> TorrentGlide
 
 <p align="center">
+  <a href="https://chromewebstore.google.com/detail/torrentglide/ankgbfpkdlajgojmgijifehjbkfekhpb"><img src="https://img.shields.io/chrome-web-store/v/ankgbfpkdlajgojmgijifehjbkfekhpb?label=Chrome%20Web%20Store&logo=googlechrome&logoColor=white&color=4285F4" alt="Chrome Web Store"></a>
+  <a href="https://addons.mozilla.org/firefox/addon/torrentglide/"><img src="https://img.shields.io/amo/v/torrentglide?label=Firefox%20Add-ons&logo=firefoxbrowser&logoColor=white&color=FF7139" alt="Firefox Add-ons"></a>
+  <a href="https://trszdev.github.io/torrentglide/"><img src="https://img.shields.io/badge/website-trszdev.github.io%2Ftorrentglide-2ea44f" alt="Website"></a>
+</p>
+
+<p align="center">
   <a href="docs/demo.mp4"><img src="docs/demo.gif" alt="TorrentGlide: click a magnet link, watch it while it downloads" width="800"></a><br>
   <sub>Footage: <a href="https://peach.blender.org">Big Buck Bunny</a> © Blender Foundation, CC BY 3.0</sub>
 </p>
